@@ -42,6 +42,5 @@ This repository uses the MIT License. See [LICENSE](LICENSE) for details.
 
 - [Evan Chen](https://github.com/vEnhance)
 - [Kenny Lau](https://github.com/kckennylau)
-- [Seewoo Lee](https://github.com/seewoo5)
 - [Ken Ono](https://github.com/kenono691)
 - [Jujian Zhang](https://github.com/jjaassoonn)
