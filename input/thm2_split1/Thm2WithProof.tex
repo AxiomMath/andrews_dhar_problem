@@ -1,0 +1,111 @@
+\documentclass[11pt]{amsart}
+
+\usepackage{amsmath,amssymb,amsthm,enumitem,hyperref}
+\usepackage[margin=1.05in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+\hypersetup{colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem*{definition}{Definition}
+\newtheorem*{question}{Question}
+\newtheorem*{example}{Example}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}[section]
+
+\newcommand{\C}{\mathcal C}
+\newcommand{\D}{\mathcal D}
+\newcommand{\B}{\mathcal B}
+\newcommand{\R}{\mathcal R}
+\newcommand{\F}{\mathcal F}
+\newcommand{\res}{\operatorname{res}}
+\newcommand{\wt}{\operatorname{wt}}
+\newcommand{\mult}{\operatorname{mult}}
+\newcommand{\len}{\ell}
+
+
+\begin{document}
+
+
+A partition is a weakly decreasing finite list of nonnegative integers.  The \emph{weight} of a partition is the sum of its parts.
+
+\begin{definition}[The Andrews--Dhar partition families]\label{def:families}
+Suppose that $n$ is a positive integer.
+
+\smallskip
+\noindent
+(a) Let $\C_3(n)$ be the set of partitions $\lambda$ of $n$ such that
+\begin{enumerate}[label=(\roman*)]
+\item the largest part of $\lambda$ is divisible by $3$, say it is $3J$;
+\item every part of $\lambda$ which is at most $J$ occurs at most twice.
+\end{enumerate}
+Let $C_3(n):=|\C_3(n)|$.
+\end{definition}
+
+First, let $\B_3^{(2)}(N)$ be the set of partitions of $N$ into positive parts not divisible by $3$ whose largest part is congruent to $2$ modulo $3$. In  particular, we have $\B_3^{(2)}(0)=\varnothing$.  The finite ``Glaisher map''
+\begin{equation}
+        \Gamma:\C_3(n)\longrightarrow \B_3^{(2)}(n-1)
+\end{equation}
+is defined as follows.  Given $\lambda\in\C_3(n)$, let its largest part be $3J$.  Replace one copy of this largest part by $3J-1$.  For every other original part $t$, write uniquely
+\[
+       t=3^a u,\qquad 3\nmid u,
+\]
+and replace that one part $t$ by $3^a$ copies of $u$.  After sorting, the result is $\Gamma(\lambda)$.  The special part \(3J-1\) is a largest part of the output and is congruent
+to \(2\) modulo \(3\). Indeed, every other original part is at most \(3J\);
+parts strictly smaller than \(3J\) become parts at most \(3J-1\), while any
+remaining copies of \(3J\) are converted into parts at most \(J\).
+
+The first step is a finite version of Glaisher carrying in which one distinguished largest part is lowered by one.  The truncation at the largest part is the only point requiring a check.
+
+For a fixed $J\ge1$, let $\C_{3,J}(n)$ be the subset of $\C_3(n)$ consisting of partitions whose largest part is $3J$.  Let $\B_{3,J}^{(2)}(n-1)$ be the subset of $\B_3^{(2)}(n-1)$ consisting of partitions whose largest part is exactly $3J-1$.
+
+The next proposition records that this finite carrying procedure loses no information.
+
+\begin{proposition}\label{prop:gamma}
+The finite Glaisher map restricts to a bijection
+\[
+        \Gamma_J:\C_{3,J}(n)\longrightarrow\B_{3,J}^{(2)}(n-1).
+\]
+Consequently, we have
+\[
+        \Gamma:\C_3(n)\longrightarrow\B_3^{(2)}(n-1)
+\]
+is a bijection.
+\end{proposition}
+
+\begin{proof}
+The construction of $\Gamma_J$ lowers the weight by $1$, since the distinguished part $3J$ is replaced by $3J-1$, while every other replacement preserves weight:
+\[
+        3^a u=\underbrace{u+u+\cdots+u}_{3^a\text{ copies}}.
+\]
+All produced parts are not divisible by $3$, and the distinguished part $3J-1$ is the largest part and is congruent to $2$ modulo $3$.  Hence $\Gamma_J$ lands in $\B_{3,J}^{(2)}(n-1)$.
+
+We now construct the inverse.  Start with $\rho\in\B_{3,J}^{(2)}(n-1)$.  Replace one copy of the largest part $3J-1$ by $3J$.  For every $u$ with $3\nmid u$, let $M_u$ be the number of remaining copies of $u$, and put
+\[
+        E_u:=\max\{e\ge0:u3^e\le3J\}.
+\]
+Write $M_u$ uniquely as
+\[
+        M_u=Q_u3^{E_u}+\sum_{e=0}^{E_u-1}d_{u,e}3^e,
+        \qquad Q_u\ge0,
+        \qquad d_{u,e}\in\{0,1,2\}.
+\]
+Insert $Q_u$ copies of $u3^{E_u}$ and, for $0\le e<E_u$, insert $d_{u,e}$ copies of $u3^e$.  Do this independently for all $u$ not divisible by $3$, and sort.
+
+The resulting partition has largest part $3J$.  It remains to check the multiplicity condition below $J$.  By the definition of $E_u$,
+\[
+        u3^{E_u}\le3J<u3^{E_u+1}.
+\]
+If $u3^{E_u}\le J$, then multiplying by $3$ gives $u3^{E_u+1}\le3J$, a contradiction.  Hence $u3^{E_u}>J$.  This top bucket may occur with arbitrary multiplicity $Q_u$.  Every lower bucket $u3^e$ with $e<E_u$ is at most $J$, and it occurs with multiplicity $d_{u,e}\in\{0,1,2\}$.  Thus every part at most $J$ occurs at most twice.
+
+For each fixed $u$, the forward map replaces one copy of $u3^e$ by $3^e$ copies of $u$, and the inverse recovers the multiplicities by the displayed base-$3$ expansion with the top bucket separated.  The distinguished part is reversed by $3J\leftrightarrow 3J-1$.  Therefore the two maps are inverse bijections.
+\end{proof}
+
+
+\end{document}

@@ -1,0 +1,47 @@
+[![Logo for Axiom Math](logo.svg)](https://axiommath.ai/)
+
+# Bijection
+
+The formal proofs provided in this work were developed and verified using **Lean 4.28.0**. Compatibility with earlier or later versions is not guaranteed due to the evolving nature of the Lean 4 compiler and its core libraries.
+
+## Repository structure
+
+This repository collects several formalization runs, each in its own subdirectory
+(`thm1`, `thm2_split1`, `thm2_split2`, `thm2_split3`, `thm2_split4`):
+
+- Inputs for each run live under [`input/<run>/`](input/).
+- Lean outputs for each run live under [`Bijection/<run>/`](Bijection/).
+
+## Input files
+
+For each run, [`input/<run>/`](input/) contains:
+
+- `task.md`: natural-language description of the problem.
+- `Thm*WithProof.tex`: the LaTeX statement and proof that the formalization follows.
+- `requirement.md`: additional requirements/constraints for the run (present for the
+  `thm2_split*` runs; `thm1` does not have one).
+
+The following inputs are shared across all runs:
+
+- `.environment`: specifies the Lean version (`lean-4.28.0`).
+- `AndrewsDhar_arXivPaper.tex`: the source paper, available from
+  <https://arxiv.org/abs/2512.12346>.
+
+## Output files
+
+For each run, [`Bijection/<run>/`](Bijection/) contains:
+
+- `problem.lean`: translation of the problem statement into Lean.
+- `solution.lean`: formal solution in Lean.
+
+## License
+
+This repository uses the MIT License. See [LICENSE](LICENSE) for details.
+
+## Repository maintainers
+
+- [Evan Chen](https://github.com/vEnhance)
+- [Kenny Lau](https://github.com/kckennylau)
+- [Seewoo Lee](https://github.com/seewoo5)
+- [Ken Ono](https://github.com/kenono691)
+- [Jujian Zhang](https://github.com/jjaassoonn)

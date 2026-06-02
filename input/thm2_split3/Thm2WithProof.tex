@@ -1,0 +1,110 @@
+\documentclass[11pt]{amsart}
+
+\usepackage{amsmath,amssymb,amsthm,enumitem,hyperref}
+\usepackage[margin=1.05in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+\hypersetup{colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem*{definition}{Definition}
+\newtheorem*{question}{Question}
+\newtheorem*{example}{Example}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}[section]
+
+\newcommand{\C}{\mathcal C}
+\newcommand{\D}{\mathcal D}
+\newcommand{\B}{\mathcal B}
+\newcommand{\R}{\mathcal R}
+\newcommand{\F}{\mathcal F}
+\newcommand{\res}{\operatorname{res}}
+\newcommand{\wt}{\operatorname{wt}}
+\newcommand{\mult}{\operatorname{mult}}
+\newcommand{\len}{\ell}
+
+
+\begin{document}
+
+
+A partition is a weakly decreasing finite list of nonnegative integers.  The \emph{weight} of a partition is the sum of its parts. Given a partition
+\[
+\lambda=(\lambda_1,\lambda_2,\ldots,\lambda_r),
+\qquad
+\lambda_1\geq \lambda_2\geq \cdots \geq \lambda_r,
+\]
+its \emph{Ferrers diagram} is the left-justified array of boxes with \(\lambda_i\)
+boxes in the \(i\)-th row.
+
+The \emph{conjugate partition} \(\lambda'\) is obtained by interchanging rows and
+columns in this diagram, or equivalently by reflecting the diagram across its
+main diagonal.  Therefore, the \(i\)-th part of \(\lambda'\) is the number of rows of
+the Ferrers diagram of \(\lambda\) that contain at least \(i\) boxes:
+\[
+\lambda'_i=\#\{j:\lambda_j\ge i\}.
+\]
+
+A positive partition $\alpha=(\alpha_1,\ldots,\alpha_r)$ is called \emph{$3$-flat} if
+\[
+        \alpha_i-\alpha_{i+1}<3\quad(1\le i<r),
+        \qquad\text{and}\qquad
+        \alpha_r<3.
+\]
+Equivalently, after appending a final zero, all consecutive gaps are $0$, $1$, or $2$.  A partition is \emph{$3$-regular} if none of its parts is divisible by $3$.  The nonzero residue sequence $\res(\alpha)$ is obtained from $\alpha$ by deleting all parts divisible by $3$ and recording the residues modulo $3$ of the remaining parts, in order.  Let $\F^{(2)}(N)$ be the set of $3$-flat partitions of $N$ whose first nonzero residue is $2$; in particular, $\F^{(2)}(0)=\varnothing$.
+
+The last operation is a smallest-part raising map
+\[
+        \mathcal T:\R(N)\longrightarrow \D_3^{(0)}(N+1),
+\]
+where $\R(N)$ is the set of positive partitions $\sigma$ of $N$ satisfying the following two conditions:
+\begin{enumerate}[label=(\roman*),leftmargin=2.6em]
+\item no part of $\sigma$ occurs three or more times;
+\item either $\ell(\sigma)\equiv2\pmod3$, or $\ell(\sigma)\equiv0\pmod3$ and the smallest part of $\sigma$ is unique.
+\end{enumerate}
+The second alternative presupposes that $\sigma$ is nonempty; in particular, this convention gives $\R(0)=\varnothing$.
+
+Conjugation translates multiplicity bounds into flatness bounds.  It also converts the length congruence in $\R(N)$ into the first-residue condition defining $\F^{(2)}(N)$.
+
+The next lemma is the standard conjugation dictionary specialized to the present residue condition.
+
+\begin{lemma}\label{lem:conj}
+Conjugation gives a bijection
+\[
+        \R(N)\longrightarrow\F^{(2)}(N),
+        \qquad \sigma\longmapsto\sigma'.
+\]
+\end{lemma}
+
+\begin{proof}
+Let $\sigma\in\R(N)$ and set $\alpha=\sigma'$.  In conjugate partitions, multiplicities in $\sigma$ become consecutive differences in $\alpha$.  Since no part of $\sigma$ occurs three or more times, every gap in $\alpha$, including the final gap down to zero, is $0$, $1$, or $2$.  Thus $\alpha$ is $3$-flat.
+
+If $\ell(\sigma)\equiv2\pmod3$, then $\alpha_1=\ell(\sigma)\equiv2\pmod3$, so the first nonzero residue of $\alpha$ is $2$.  If $\ell(\sigma)\equiv0\pmod3$ and the smallest part of $\sigma$ is $s$ and is unique, then
+\[
+        \alpha_1=\cdots=\alpha_s=\ell(\sigma)\equiv0\pmod3.
+\]
+Because the smallest part is unique, there is at least one part of $\sigma$ strictly larger than $s$; otherwise the length would be $1$, not a positive multiple of $3$.  Hence the next column exists and has height
+\[
+        \alpha_{s+1}=\ell(\sigma)-1\equiv2\pmod3.
+\]
+Thus again the first nonzero residue is $2$.
+
+Conversely, let $\alpha\in\F^{(2)}(N)$ and set $\sigma=\alpha'$.  Since $\alpha$ is $3$-flat, all multiplicities in $\sigma$ are at most two.  If $\alpha_1\equiv2\pmod3$, then $\ell(\sigma)=\alpha_1\equiv2\pmod3$, so $\sigma\in\R(N)$.  Otherwise, the initial parts of $\alpha$ are divisible by $3$ until the first nonzero residue $2$ appears.  Suppose this occurs after $s$ initial parts.  Then
+\[
+        \alpha_s\equiv0\pmod3,
+        \qquad
+        \alpha_{s+1}\equiv2\pmod3.
+\]
+Because $\alpha$ is $3$-flat, the difference $\alpha_s-\alpha_{s+1}$ is $1$ or $2$; its residue modulo $3$ is $1$, so it is exactly $1$. 
+For \(j<s\), the consecutive parts \(\alpha_j\) and \(\alpha_{j+1}\) are both
+divisible by \(3\) and differ by less than \(3\), hence they are equal.
+ This difference is the multiplicity of the smallest part $s$ of $\sigma$.  Hence the smallest part of $\sigma$ is unique and $\ell(\sigma)=\alpha_1\equiv0\pmod3$.  Therefore $\sigma\in\R(N)$.
+\end{proof}
+
+
+\end{document}

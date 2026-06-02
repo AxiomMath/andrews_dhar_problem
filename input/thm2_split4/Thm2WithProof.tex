@@ -1,0 +1,700 @@
+\documentclass[11pt]{amsart}
+
+\usepackage{amsmath,amssymb,amsthm,enumitem,hyperref}
+\usepackage[margin=1.05in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+\hypersetup{colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem*{definition}{Definition}
+\newtheorem*{question}{Question}
+\newtheorem*{example}{Example}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}[section]
+
+\newcommand{\C}{\mathcal C}
+\newcommand{\D}{\mathcal D}
+\newcommand{\B}{\mathcal B}
+\newcommand{\R}{\mathcal R}
+\newcommand{\F}{\mathcal F}
+\newcommand{\res}{\operatorname{res}}
+\newcommand{\wt}{\operatorname{wt}}
+\newcommand{\mult}{\operatorname{mult}}
+\newcommand{\len}{\ell}
+
+
+\begin{document}
+
+
+A partition is a weakly decreasing finite list of nonnegative integers.  The \emph{weight} of a partition is the sum of its parts.
+
+Next we need another partition map.  It is the modulus $3$ specialization of Stockhofe's direct bijection between $m$-flat and $m$-regular partitions \cite{Stockhofe}.  The relevant facts about this map were previously derived by Stockhofe.  We give a self-contained proof of the special case needed here, so that the construction and its inverse can be checked directly without having to appeal to the original source.
+
+A positive partition $\alpha=(\alpha_1,\ldots,\alpha_r)$ is called \emph{$3$-flat} if
+\[
+        \alpha_i-\alpha_{i+1}<3\quad(1\le i<r),
+        \qquad\text{and}\qquad
+        \alpha_r<3.
+\]
+Equivalently, after appending a final zero, all consecutive gaps are $0$, $1$, or $2$.  A partition is \emph{$3$-regular} if none of its parts is divisible by $3$.  The nonzero residue sequence $\res(\alpha)$ is obtained from $\alpha$ by deleting all parts divisible by $3$ and recording the residues modulo $3$ of the remaining parts, in order.  Let $\F^{(2)}(N)$ be the set of $3$-flat partitions of $N$ whose first nonzero residue is $2$; in particular, $\F^{(2)}(0)=\varnothing$.
+
+For a sequence $v=(v_1,\ldots,v_k)$ with $v_i\in\{1,2\}$, its residue core $\Lambda(v)$ is the unique $3$-flat, $3$-regular partition whose $i$th part is congruent to $v_i$ modulo $3$.  It is constructed from right to left: set $c_k=v_k$, and, once $c_{i+1}$ is known, choose $c_i$ to be the unique number among $c_{i+1},c_{i+1}+1,c_{i+1}+2$ congruent to $v_i$ modulo $3$.  Then $\Lambda(v)=(c_1,\ldots,c_k)$.  For the empty sequence, $\Lambda(\varnothing)$ is the empty partition.
+
+A part $A_i$ of a $3$-flat partition $A=(A_1,\ldots,A_r)$ is \emph{flat-removable} if $A_i$ is divisible by $3$ and deleting that one part leaves a $3$-flat partition.  The next map removes the multiples of $3$ from a $3$-flat partition and records the lost information in an ordinary partition.  Flat-removable multiples can simply be deleted.  The remaining multiples require a compensated deletion, in which the larger parts are lowered by $3$ so that $3$-flatness is preserved.
+
+We define the map
+\begin{equation}
+       \Phi_3:\{3\text{-flat partitions of }N\}
+       \longrightarrow
+       \{3\text{-regular partitions of }N\}
+\end{equation}
+with the following  algorithm.
+\begin{enumerate}[label=\textbf{S\arabic*.},leftmargin=3.1em]
+\item Start with $A=\alpha$ and an empty record list $\nu_{\rm rec}$.
+\item Scan $A$ from smallest part to largest part.  Whenever the current part is flat-removable, delete it and append one third of its value to $\nu_{\rm rec}$.  The scan is dynamic: after a deletion, continue with the next part above the deleted part.
+\item Scan the remaining partition from largest part to smallest part.  If the current part is $A_i=3a$, delete it, subtract $3$ from each of the $i-1$ larger parts, and append $a+i-1$ to $\nu_{\rm rec}$.
+\item When all multiples of $3$ have been removed, the remaining partition is the residue core $\Lambda(\res(\alpha))$.  Sort the record list $\nu_{\rm rec}$ into a partition $\nu$, and set
+\[
+        \Phi_3(\alpha):=\Lambda(\res(\alpha))+3\nu',
+\]
+where the sum is componentwise and missing parts are treated as zero.
+\end{enumerate}
+
+The inverse to $\Phi_3$ is equally explicit.  Given a $3$-regular partition $\beta$, compute its residue sequence $v=\res(\beta)$ and its residue core $A=\Lambda(v)$.  The partitions $\beta$ and $A$ have the same length and the same ordered nonzero residue sequence; in particular, $A_i\equiv\beta_i\pmod3$ for every $i$.  Put
+\[
+        q_i:=\frac{\beta_i-A_i}{3}
+\]
+for every index $i$.  Lemma~\ref{lem:extract} proves that the list $q=(q_1,q_2,\ldots)$ is a partition; set $\nu:=q'$.  Now read the parts of $\nu$ from largest to smallest.  For a current part $p$, perform one of the following insertions.
+\begin{itemize}[leftmargin=2.4em]
+\item A \emph{hard insertion of size $p$} chooses an integer $h$ with $0\le h\le p-1$, not exceeding the current length, adds $3$ to the first $h$ parts of the current partition, and inserts a new part $3(p-h)$ immediately after those $h$ larger parts.  It is admissible if the result is $3$-flat and the inserted multiple of $3$ is not flat-removable.
+\item An \emph{easy insertion of size $p$} inserts a new part $3p$ in weakly decreasing order.  It is admissible if the result is $3$-flat and the inserted part is flat-removable.
+\end{itemize}
+Lemmas~\ref{lem:exist-insertion}--\ref{lem:well-defined-inverse} prove that this reverse step is always available in the present situation and is unique: if an admissible hard insertion exists, it is the required move; otherwise the unique admissible move is the easy insertion.  After all parts of $\nu$ have been processed, the resulting $3$-flat partition is $\Phi_3^{-1}(\beta)$.  We shall verify that these two algorithms are inverse to each other.
+
+This is the technical heart of the paper.  We isolate the modulus-three Stockhofe map, prove that the deletion and insertion algorithms are well-defined, and then prove directly that they are inverse to one another.
+
+This subsection verifies facts about $\Phi_3$ stated in the introduction.  As
+noted above, these are the modulus $3$ case of Stockhofe's bijection.  The proofs
+are included here to keep the argument self-contained.
+
+The residue core is the minimal flat partition with a prescribed residue pattern.  We first prove that it is well-defined and unique.
+
+\begin{lemma}\label{lem:core}
+For every sequence $v=(v_1,\ldots,v_k)$ with $v_i\in\{1,2\}$, the residue core $\Lambda(v)$ exists and is unique.
+\end{lemma}
+
+\begin{proof}
+The construction given in the introduction produces a weakly decreasing sequence because each $c_i$ is chosen from $c_{i+1},c_{i+1}+1,c_{i+1}+2$.  The differences are less than $3$, the last part is $1$ or $2$, and the residues are prescribed.  Hence it is a $3$-flat, $3$-regular partition with residue sequence $v$.
+
+For uniqueness, the last part must be $v_k$, since it is positive, less than $3$, and congruent to $v_k$ modulo $3$.  Once $c_{i+1}$ is known, the previous part must lie among $c_{i+1},c_{i+1}+1,c_{i+1}+2$ and have residue $v_i$ modulo $3$.  There is exactly one such number.  Thus the partition is forced.
+\end{proof}
+
+The forward algorithm begins by deleting exactly those multiples of $3$ whose deletion preserves flatness.  The next lemma gives a local criterion for this condition.
+
+\begin{lemma}\label{lem:removable}
+Let $A=(A_1,\ldots,A_r)$ be $3$-flat and suppose $A_i=3a$.  Then this
+indexed occurrence of $A_i$ is flat-removable exactly in the following cases:
+\begin{enumerate}[label=(\roman*),leftmargin=2.6em]
+\item $i=1$;
+\item $i>1$ and $A_{i-1}=A_i$;
+\item $i<r$ and $A_i=A_{i+1}$;
+\item $1<i<r$ and the inequalities $A_{i-1}>A_i>A_{i+1}$ hold, with
+\[
+        A_{i-1}=3a+j_1,
+        \qquad
+        A_{i+1}=3(a-1)+j_2,
+        \qquad
+        0<j_1<j_2<3.
+\]
+\end{enumerate}
+Consequently, after all flat-removable multiples have been deleted, every
+remaining multiple $3a$ has both neighbors, neither neighbor is equal to it, and
+those neighbors have the form
+\[
+        A_{i-1}=3a+j_1,
+        \qquad
+        A_{i+1}=3(a-1)+j_2,
+        \qquad
+        0<j_2\le j_1<3.
+\]
+\end{lemma}
+
+\begin{proof}
+Deleting $A_i$ can only create a new violation at the place where the part above
+$A_i$ becomes adjacent to the part below $A_i$; all other consecutive gaps are
+unchanged.  If $i=1$, there is no upper neighbor, so deletion cannot create a
+new upper-lower gap.  If $i>1$ and $A_{i-1}=A_i$, then after deletion the upper
+neighbor is equal to the deleted part, and the new gap is one of the old gaps.
+Similarly, if $i<r$ and $A_i=A_{i+1}$, then the lower neighbor is equal to the
+deleted part, and the new gap is again one of the old gaps.  These three cases
+are therefore flat-removable.
+
+It remains to consider the strict interior case
+$A_{i-1}>A_i>A_{i+1}$.  Since $A$ is $3$-flat and $A_i=3a$, the neighboring
+parts must be
+\[
+        A_{i-1}=3a+j_1,
+        \qquad
+        A_{i+1}=3(a-1)+j_2,
+        \qquad j_1,j_2\in\{1,2\}.
+\]
+After deleting $3a$, the new gap is
+\[
+        (3a+j_1)-\bigl(3(a-1)+j_2\bigr)=3+j_1-j_2.
+\]
+This is less than $3$ if and only if $j_1<j_2$.  This proves the characterization.
+
+For the final assertion, let $3a$ be a multiple which remains after Stage S2.  It
+cannot be the first part, and it cannot be equal to either neighbor, since those
+are flat-removable cases.  It also cannot be the last part, because a positive
+multiple of $3$ cannot be the last part of a $3$-flat partition: the final gap to
+zero would be at least $3$.  Hence it is a strict interior multiple.  The
+strict-interior deletion condition just proved must fail, so its neighboring
+residues satisfy $j_2\le j_1$.
+\end{proof}
+
+The record list must fit over the residue core when the final partition $\Lambda(\res(\alpha))+3\nu'$ is formed.  The next bound supplies precisely this length control.
+
+\begin{lemma}\label{lem:record-bound}
+Let $\alpha$ be a $3$-flat partition, and let $k$ be the number of parts of
+$\alpha$ not divisible by $3$.  Every entry recorded by the forward
+$\Phi_3$-algorithm is at most $k$.  Consequently, if $\nu$ is the sorted record
+partition, then $\ell(\nu')\le k$.
+\end{lemma}
+
+\begin{proof}
+We use the following elementary consequence of $3$-flatness.  If a $3$-flat
+partition contains a part at least $3a$, then for each
+$b=0,1,\ldots,a-1$ it contains at least one part in the interval
+$\{3b+1,3b+2\}$.  Otherwise the partition would have to pass from a part at
+least $3b+3$ to a part at most $3b$ in one consecutive step, or in the final
+step to zero, producing a gap at least $3$.  Thus the tail from level $3a$ down
+to zero contains at least $a$ nonmultiples of $3$.
+
+A Stage S2 deletion of a flat-removable part $3a$ records $a$, so the preceding
+observation gives $a\le k$.
+
+Now consider a Stage S3 deletion.  At the moment it is made, suppose the current
+part is $3a$ and there are $h$ larger parts.  The scan in Stage S3 is from
+largest to smallest, so all larger multiples of $3$ have already been removed;
+subtracting $3$ from a nonmultiple part never makes it divisible by $3$.  Hence
+these $h$ larger parts are all nonmultiples of $3$.  The tail beginning with the
+current part $3a$ contains at least $a$ further nonmultiples by the observation
+above.  Therefore the total number $k$ of nonmultiples is at least $h+a$.  The
+recorded value in Stage S3 is exactly $a+h$, so it is also at most $k$.
+
+Since the largest part of $\nu$ is at most $k$, the conjugate partition $\nu'$ has
+length at most $k$.
+\end{proof}
+We now check that the deletion algorithm really produces a $3$-regular partition and preserves the relevant data.
+
+\begin{lemma}\label{lem:phi-forward-well}
+The forward algorithm is well-defined.  It sends a $3$-flat partition $\alpha$ to a $3$-regular partition of the same weight and preserves the ordered nonzero residue sequence.
+\end{lemma}
+
+\begin{proof}
+Stage S2 of the algorithm is well-defined by the definition of flat-removable: every deletion made in that stage leaves the partition $3$-flat.
+
+For Stage S3, take a remaining multiple $A_i=3a$.  By Lemma~\ref{lem:removable}, it has both neighbors and is locally between
+\[
+        A_{i-1}=3a+j_1,
+        \qquad
+        A_{i+1}=3(a-1)+j_2,
+        \qquad
+        0<j_2\le j_1<3.
+\]
+When we delete $A_i$ and subtract $3$ from all larger parts, all gaps among the larger parts remain unchanged.  The only new gap to check is the gap between the lowered predecessor and the successor:
+\[
+        (3a+j_1-3)-\bigl(3(a-1)+j_2\bigr)=j_1-j_2,
+\]
+which is $0$ or $1$.  Therefore, Stage S3 also preserves $3$-flatness.  At the end of the deletion stages no multiples of $3$ remain; the temporary partition is $3$-flat, $3$-regular, and has the same nonzero residue sequence as $\alpha$.  By Lemma~\ref{lem:core}, it is $\Lambda(\res(\alpha))$.
+
+Let $k$ be the length of this residue core.  Lemma~\ref{lem:record-bound} gives $\ell(\nu')\le k$.  Hence the final componentwise sum
+\[
+        \Lambda(\res(\alpha))+3\nu'
+\]
+has no extra parts appended beyond the residue core.  Each of its $k$ parts is congruent to the corresponding nonzero residue-core part modulo $3$, so every part remains nondivisible by $3$.  Thus the forward algorithm lands in the set of $3$-regular partitions.
+
+Only multiples of $3$ are deleted, and subtracting or adding $3$ to existing nonmultiples does not change their residues.  Hence the ordered nonzero residue sequence is preserved.
+
+Finally, we check the weight.  If Stage S2 deletes $3a$, it records $a$, and the final term $3\nu'$ restores weight $3a$.  If Stage S3 deletes $3a$ in position $i$, then it also subtracts $3$ from the $i-1$ larger parts, so the temporary partition loses
+\[
+        3a+3(i-1)=3(a+i-1).
+\]
+The recorded value is $a+i-1$, so the final term $3\nu'$ restores exactly that weight.  Therefore the output has the same weight as $\alpha$.
+\end{proof}
+
+For the inverse algorithm, the first concern is that the componentwise difference between a $3$-regular partition and its residue core is a genuine partition after division by $3$.
+
+\begin{lemma}\label{lem:extract}
+In the $\Phi_3^{-1}$ algorithm, the quotient partition $q$ extracted from a $3$-regular partition $\beta$ is a partition.
+\end{lemma}
+
+\begin{proof}
+Let $A=\Lambda(\res(\beta))$.  Each $q_i=(\beta_i-A_i)/3$ is a nonnegative integer.  Indeed, $A$ is componentwise minimal among weakly decreasing positive sequences with the same ordered residue sequence: from the last part upward, each part is the least positive lift of the required residue which is at least the part below it.  Therefore $\beta_i\ge A_i$ and $\beta_i\equiv A_i\pmod3$ for every $i$.
+
+To see that the quotients are weakly decreasing, set $\beta_{k+1}=A_{k+1}=0$, where $k$ is the length of $\beta$.  For $1\le i\le k$, both $\beta_i-\beta_{i+1}$ and $A_i-A_{i+1}$ have the same residue modulo $3$, and $A_i-A_{i+1}$ is the representative of that residue in $\{0,1,2\}$.  Since $\beta_i\ge\beta_{i+1}$, the difference
+\[
+        (\beta_i-\beta_{i+1})-(A_i-A_{i+1})
+\]
+is a nonnegative multiple of $3$.  Dividing by $3$ gives $q_i\ge q_{i+1}$.  Hence $q$ is weakly decreasing.
+\end{proof}
+
+
+
+For the next three lemmas, if \(A=(A_1,\ldots,A_r)\) is \(3\)-flat, put
+\[
+        h_i(A):=A_i+3i\qquad (1\le i\le r).
+\]
+Since \(A_i-A_{i+1}\in\{0,1,2\}\), the sequence
+\[
+        h_1(A),h_2(A),\ldots,h_r(A)
+\]
+is strictly increasing.  For a positive integer \(p\), call \(A\)
+\emph{\(p\)-safe} if no \(h_i(A)\) belongs to
+\[
+        \{3,6,\ldots,3p\}.
+\]
+
+The next lemma says that a safe intermediate partition always admits a next reverse move of the required size.
+
+\begin{lemma}[Existence of one reverse insertion]\label{lem:exist-insertion}
+Let \(A=(A_1,\ldots,A_r)\) be a \(3\)-flat partition, and let \(k\) be the number
+of parts of \(A\) which are not divisible by \(3\).  If \(1\le p\le k\) and
+\(A\) is \(p\)-safe, then at least one admissible insertion of size \(p\) exists.
+More precisely:
+\begin{enumerate}[label=(\roman*),leftmargin=2.6em]
+\item if \(h_i(A)<3p<h_{i+1}(A)\) for some \(i\), then the hard insertion
+after the first \(i\) parts is admissible;
+\item if \(3p<h_1(A)\), then the easy insertion of \(3p\) in weakly decreasing
+order is admissible.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Because \(p\le k\le r\) and \(A_r\ge1\), we have
+\[
+        h_r(A)=A_r+3r\ge 1+3r\ge 1+3p>3p.
+\]
+Since \(A\) is \(p\)-safe, no \(h_i(A)\) is equal to \(3p\).  Hence either
+\(3p<h_1(A)\), or there is a unique index \(i\) with
+\[
+        h_i(A)<3p<h_{i+1}(A).
+\]
+
+Assume first that \(h_i(A)<3p<h_{i+1}(A)\).  Then \(i<r\), and
+\(h_i(A)<3p\) implies \(i\le p-1\), so the hard insertion after the first
+\(i\) parts is an allowed hard insertion.  Put
+\[
+        m:=3(p-i).
+\]
+The new partition is
+\[
+        B=(A_1+3,\ldots,A_i+3,\ m,\ A_{i+1},\ldots,A_r).
+\]
+The only gaps which are not inherited from \(A\) are the two gaps adjacent to
+\(m\).  Since
+\[
+        h_{i+1}(A)-h_i(A)=3-(A_i-A_{i+1})\le3
+\]
+and \(h_i(A)<3p<h_{i+1}(A)\), we have
+\[
+        3p-2\le h_i(A)\le 3p-1,\qquad
+        3p+1\le h_{i+1}(A)\le 3p+2.
+\]
+Therefore, we have
+\[
+        0< A_i+3-m=h_i(A)+3-3p<3
+\]
+and
+\[
+        0< m-A_{i+1}=3p+3-h_{i+1}(A)<3.
+\]
+Thus \(B\) is \(3\)-flat.  The inserted part \(m\) is not flat-removable, because
+deleting it would put \(A_i+3\) next to \(A_{i+1}\), producing the gap
+\[
+        (A_i+3)-A_{i+1}=(A_i-A_{i+1})+3\ge3.
+\]
+So the hard insertion is admissible.
+
+Now assume that \(3p<h_1(A)\).  Insert \(3p\) in weakly decreasing order, and
+let \(t\) be the number of parts of \(A\) which are at least \(3p\).  Since
+\(A_r<3\le3p\), we have \(t<r\).  If \(t>0\), then \(A_t\ge3p\) and
+\(A_{t+1}\le3p\).  The \(3\)-flatness of \(A\) gives
+\[
+        A_t-3p<3,\qquad 3p-A_{t+1}<3,
+\]
+for otherwise the adjacent gap \(A_t-A_{t+1}\) would be at least \(3\).  If
+\(t=0\), then all parts of \(A\) are below \(3p\), and
+\(3p<h_1(A)=A_1+3\) gives \(3p-A_1<3\).  Hence the partition obtained by
+inserting \(3p\) is \(3\)-flat.  Deleting the inserted part gives back the
+original \(3\)-flat partition \(A\), so the inserted part is flat-removable.
+Thus the easy insertion is admissible.
+\end{proof}
+
+Existence is not enough: the inverse algorithm must not require choices.  The following lemma proves the required uniqueness.
+
+\begin{lemma}[Uniqueness of one reverse insertion]\label{lem:unique-insertion}
+Let \(A=(A_1,\ldots,A_r)\) be a \(3\)-flat partition and let \(p\ge1\).
+There is at most one admissible hard insertion of size \(p\).  If an admissible
+hard insertion exists, then no easy insertion of size \(p\) is admissible.  The
+easy insertion, when admissible, has a unique resulting partition.
+\end{lemma}
+
+\begin{proof}
+We first prove uniqueness of a possible hard insertion.  Put
+\[
+        c_i:=A_i+3i \qquad (1\le i\le r).
+\]
+Since \(A\) is \(3\)-flat, the sequence \(c_1,c_2,\ldots,c_r\) is strictly
+increasing:
+\[
+        c_{i+1}-c_i=3-(A_i-A_{i+1})\in\{1,2,3\}.
+\]
+Suppose that a hard insertion of size \(p\) after the first \(i\) parts is
+admissible.  The case \(i=0\) cannot occur, because then the inserted multiple
+of \(3\) is the largest part and is flat-removable.  The case \(i=r\) cannot
+occur either, because the inserted part would be the smallest part and would be
+a positive multiple of \(3\), contradicting the final \(3\)-flat condition
+that the smallest part be less than \(3\).
+
+Thus \(1\le i<r\).  Let the inserted part be \(m=3(p-i)\).  The two new
+boundary gaps must both be \(0\), \(1\), or \(2\).  Since the inserted multiple
+is required not to be flat-removable, neither boundary gap can be \(0\); hence
+\[
+        0< A_i+3-m<3,
+        \qquad
+        0< m-A_{i+1}<3.
+\]
+In particular, we have
+\[
+        c_i<3p<c_{i+1}.
+\]
+Because the sequence \(c_i\) is strictly increasing, there is at most one index
+\(i\) with this property.  Hence there is at most one admissible hard insertion.
+
+We next show that an admissible hard insertion excludes an easy insertion.  If
+the hard insertion occurs after \(i\) parts, then \(c_i<3p<c_{i+1}\).  If an
+easy insertion of \(3p\) were possible after \(h\) parts, then either \(h<i\)
+or \(h\ge i\).  If \(h<i\) and \(h\ge1\), then \(c_h<c_i<3p\), so
+\[
+        A_h=c_h-3h<3p-3h<3p,
+\]
+contradicting the requirement that the first \(h\) parts lie weakly above the
+inserted part \(3p\).  If \(h=0\), then \(c_1\le c_i<3p\), so
+\(A_1<3p-3\), and the new top gap from \(3p\) to \(A_1\) is at least \(3\).
+
+The case \(h=r\) is impossible for an easy insertion, because then the inserted
+part \(3p\) would be the smallest part and would violate the final \(3\)-flat
+condition.  Thus, if \(h\ge i\), we have \(h<r\), and
+\[
+        A_{h+1}\le A_{i+1}<3(p-i)\le 3p-3,
+\]
+so the lower gap from \(3p\) to \(A_{h+1}\) is at least \(3\).  In all cases
+the easy insertion would fail to be \(3\)-flat.
+
+Finally, the easy insertion, if admissible, has only one possible resulting
+partition: insert \(3p\) into the weakly decreasing order of \(A\).  If there
+are equal parts, choosing a different position among those equal parts gives
+the same partition.  Thus there is at most one easy insertion.
+\end{proof}
+
+The safety condition is designed to be stable under the unique admissible insertion.  This stability is what lets the inverse algorithm process an entire record list.
+
+\begin{lemma}[Safety is preserved]\label{lem:safety-preserved}
+Let \(A\) be \(p\)-safe.  If an admissible insertion of size \(p\) is performed,
+then the resulting \(3\)-flat partition is again \(p\)-safe.
+\end{lemma}
+
+\begin{proof}
+Let \(B\) be the partition after the insertion.
+
+First suppose the insertion is hard after the first \(i\) parts.  For every old
+part of \(A\), the corresponding value \(h_j=A_j+3j\) is increased by exactly
+\(3\) in \(B\): the first \(i\) parts are raised by \(3\), and the remaining
+old parts have their indices increased by \(1\).  The newly inserted part has
+\(h\)-value
+\[
+        3(p-i)+3(i+1)=3(p+1).
+\]
+Thus a non-divisible \(h\)-value remains non-divisible, and a divisible
+\(h\)-value \(3s\) with \(s>p\) becomes \(3(s+1)\).  The new \(h\)-value
+\(3(p+1)\) is also larger than \(3p\).  Hence no \(h\)-value of \(B\) lies in
+\(\{3,6,\ldots,3p\}\).
+
+Now suppose the insertion is easy after the first \(t\) parts.  The old
+\(h\)-values above the inserted part are unchanged.  The inserted part has
+\(h\)-value
+\[
+        3p+3(t+1)=3(p+t+1)>3p.
+\]
+Every old part below the insertion point has its index increased by \(1\), so
+its \(h\)-value is increased by \(3\).  Again no new \(h\)-value can enter
+\(\{3,6,\ldots,3p\}\).  Thus \(B\) is \(p\)-safe.
+\end{proof}
+
+We can now iterate the one-step existence and uniqueness statements.  This gives a genuine inverse algorithm for every $3$-regular input.
+
+\begin{lemma}[The inverse algorithm is well-defined]\label{lem:well-defined-inverse}
+For every \(3\)-regular partition \(\beta\), the inverse insertion algorithm
+stated in the introduction is well-defined.  At each step exactly one
+admissible insertion is available and it is the insertion selected by the rule:
+use the admissible hard insertion if it exists, and otherwise use the easy
+insertion.
+\end{lemma}
+
+\begin{proof}
+Let \(v=\res(\beta)\), let \(A=\Lambda(v)\), and let \(k\) be the length of
+\(v\), equivalently the number of parts of the \(3\)-regular partition
+\(\beta\).  By Lemma~\ref{lem:extract}, the extracted quotient sequence
+\[
+        q_i=\frac{\beta_i-A_i}{3}
+\]
+is a partition, and \(\nu=q'\) is therefore a weakly decreasing list.  Every
+part of \(\nu\) is at most \(k\).
+
+The starting partition \(A=\Lambda(v)\) is \(p\)-safe for every \(p\le k\):
+indeed
+\[
+        h_i(A)=A_i+3i\equiv A_i\pmod3,
+\]
+and \(A_i\) is never divisible by \(3\).
+
+We now process the parts of \(\nu\) from largest to smallest.  Suppose the next
+part is \(p\).  All previously processed parts are at least \(p\).  By induction
+on the number of processed parts, the current partition is \(p\)-safe: this is
+clear at the start, and after an insertion of size \(q\ge p\),
+Lemma~\ref{lem:safety-preserved} gives \(q\)-safety, which immediately implies
+\(p\)-safety.  Insertions add only parts divisible by \(3\), so the number of
+non-divisible parts remains \(k\).  Since \(p\le k\), Lemma~\ref{lem:exist-insertion}
+gives the existence of an admissible insertion of size \(p\).  Lemma~\ref{lem:unique-insertion}
+gives uniqueness in the precise sense required by the algorithm: there is at
+most one hard insertion, a hard insertion excludes an easy insertion, and the
+easy insertion has a unique result when it is admissible.
+
+After performing the insertion, Lemma~\ref{lem:safety-preserved} supplies the
+safety condition needed for the next step.  Therefore the algorithm is
+well-defined for the whole list \(\nu\).
+\end{proof}
+
+
+Before comparing the forward and inverse algorithms, we record one bookkeeping fact about labeled insertions.  It is the invariant that prevents later insertions from changing the value or the accounting position of an earlier inserted multiple.
+
+\begin{lemma}[Later hard insertions do not raise earlier labels]\label{lem:no-raise-labels}
+During the inverse algorithm, label every inserted multiple of $3$ by the size $p$ of the insertion which created it.  Suppose a labeled multiple of size $p$ currently occupies position $j$ in the current $3$-flat partition $A$.  Then
+\[
+        A_j+3j>3p.
+\]
+Consequently, if a later insertion has size $q\le p$, then a hard insertion of size $q$ cannot include this labeled part among the parts which are raised by $3$.
+\end{lemma}
+
+\begin{proof}
+At the moment an easy insertion of size $p$ creates a part in position $j$, the new part is $3p$, so its value of $A_j+3j$ is $3p+3j>3p$.  At the moment a hard insertion of size $p$ after $h$ parts creates a part, the new part is $3(p-h)$ and its position is $h+1$, so its value of $A_j+3j$ is
+\[
+        3(p-h)+3(h+1)=3(p+1)>3p.
+\]
+Now consider a later step, and assume the displayed inequality holds before that step.  An easy insertion does not change the value of any old part; it either leaves the old index unchanged or increases it by one, so the displayed inequality remains true.  For a later hard insertion of size $q\le p$ after $h$ parts, admissibility forces
+\[
+        A_h+3h<3q
+\]
+when $h>0$.  If the labeled part were among the first $h$ parts, then the strict increase of the sequence $A_i+3i$ would give
+\[
+        A_h+3h\ge A_j+3j>3p\ge3q,
+\]
+a contradiction.  Thus the labeled part is not raised.  It may have its index increased by one if the new hard part is inserted above it, but its value is unchanged, so the inequality remains true.  This proves the invariant by induction over the later insertions.
+\end{proof}
+
+It remains to prove that the insertion algorithm and the deletion algorithm undo each other in the same accounting system.  The following compatibility lemma is the point at which the proof uses labels.
+
+\begin{lemma}[Compatibility with the deletion algorithm]\label{lem:compatibility}
+Let $\beta$ be a $3$-regular partition, and construct
+$\alpha=\Phi_3^{-1}(\beta)$ by the inverse insertion algorithm.  When the
+forward $\Phi_3$-algorithm is applied to $\alpha$, its recorded multiset is
+exactly the multiset of parts of $\nu=q'$ extracted from $\beta$.  More
+precisely, every easy insertion of size $p$ is reversed by a Stage S2 deletion
+recording $p$, and every hard insertion of size $p$ is reversed by a Stage S3
+deletion recording $p$.
+\end{lemma}
+
+\begin{proof}
+We use labeled multiples of $3$.  When the inverse algorithm inserts a multiple,
+label it by its size $p$ and by its type, easy or hard.  Nonmultiples are left
+unlabeled.  
+For this bookkeeping only, if a newly inserted easy part is equal to
+pre-existing parts, we place its label on the lowest occurrence among the equal
+parts.  This convention does not change the underlying partition, but it agrees
+with the smallest-to-largest scan in Stage S2. Thus, within any block of equal multiples of $3$, Stage S2 encounters the most
+recent easy labels first.
+Since the parts of $\nu$ are processed from largest to smallest, every later insertion after a label of size $p$ has size at most $p$.
+
+\smallskip
+\noindent
+We first show that Stage S2 deletes exactly the easy-labeled parts and records their labels.  An easy insertion of size $p$ creates a part equal to $3p$, and by definition deleting that newly inserted part restores the previous $3$-flat partition.  By Lemma~\ref{lem:no-raise-labels}, no later hard insertion raises this easy-labeled part; later easy insertions also do not change its value.
+
+
+It remains only to check that later insertions do not destroy the
+flat-removability of an easy-labeled part.  Let the easy-labeled part have
+label $p$, so that its value is $3p$.  We claim the following invariant.
+After any number of later insertions, this part still has value $3p$, and
+if it is deleted then the resulting partition is again $3$-flat.  Indeed,
+by Lemma~\ref{lem:no-raise-labels}, no later hard insertion raises this
+labeled part, and easy insertions never change the values of old parts.  A
+later easy insertion has size $q\le p$, and hence inserts a part $3q\le 3p$.
+If this inserted part becomes adjacent to the easy-labeled part, then after
+removing the easy-labeled part the new adjacent gap is no larger than a gap
+which was already present at the moment the later easy insertion was made.
+A later hard insertion also cannot raise the easy-labeled part.  Its newly
+inserted multiple is at most $3q\le 3p$; if it were inserted immediately
+above the easy-labeled part, weak decrease would force equality, which would
+amount to a hard insertion of size $p$ after no larger parts, impossible by
+admissibility.  Thus a later hard insertion does not change the two neighbors
+which are relevant for deleting the easy-labeled part.  Therefore the
+easy-labeled part remains flat-removable, remains equal to $3p$, and is
+deleted in Stage S2 with record $p$.
+
+Conversely, a hard-labeled part is not deleted in Stage S2.  Suppose such a
+part $x$ was created by a hard insertion of size $p$ after $h$ larger parts.
+Thus $x=3(p-h)$ at the moment of creation.  Let $u$ be the last of the $h$
+old parts which were raised by $3$, and let $v$ be the first old part below
+the inserted part, omitting nonexistent endpoints in the evident way.  These
+are the witness parts for the non-flatness of deleting $x$: immediately after
+creation, deleting $x$ would place $u$ next to $v$ and would create a gap at
+least $3$.  The witness parts are nonmultiples of $3$, and hence they are not
+deleted by Stage S2 or Stage S3.  Moreover, Lemma~\ref{lem:no-raise-labels}
+implies that later hard insertions do not raise $x$; later insertions can only
+place additional labeled multiples between the same witnesses, or outside the
+witness interval.  Easy-labeled multiples between the witnesses are removed
+in Stage S2, and removing them cannot decrease the resulting witness gap.
+
+We argue by induction over the Stage S2 scan, from smaller parts to larger
+parts.  Before the scan reaches a hard-labeled part $x$, all easy-labeled
+multiples below $x$ which could have been deleted have already been deleted,
+while no hard-labeled multiple below $x$ has been deleted by the induction
+hypothesis.  Therefore, any later hard-labeled multiple lying between the
+witnesses for $x$ is still present and is itself protected by its own witness
+pair.  
+
+To see this, suppose, for contradiction, that Stage S2 deletes a hard-labeled multiple, and
+let $x$ be the first such hard-labeled multiple encountered in the
+smallest-to-largest scan.  At the moment $x$ is encountered, all earlier
+easy-labeled multiples which can be removed have been removed, and no earlier
+hard-labeled multiple has been removed by the choice of $x$.  If deleting $x$
+were flat-removable, then the remaining parts between its two witness
+nonmultiples would have to prevent the original witness gap from being exposed.
+But those remaining intervening multiples are hard-labeled and have not been
+deleted; choosing the lowest such intervening hard-labeled multiple which would
+make the deletion possible gives an earlier hard-labeled Stage S2 deletion,
+contrary to the choice of $x$.  Hence deleting $x$ still exposes a gap at least
+$3$, so $x$ is not flat-removable.
+ Hence, when the Stage
+S2 scan encounters a hard-labeled part, deleting it would still expose a gap
+at least $3$ between its witness nonmultiples.  It is therefore not
+flat-removable and is not removed in Stage S2.  Consequently Stage S2 deletes
+exactly the easy-labeled parts, and after Stage S2 the remaining multiples of
+$3$ are exactly the hard-labeled parts.
+
+\smallskip
+We now consider Stage S3.  Let $x$ be a hard-labeled part created by an insertion of size $p$ after $h$ larger parts.  By Lemma~\ref{lem:no-raise-labels}, no later hard insertion raises $x$, so throughout the inverse construction its value remains
+\[
+        x=3(p-h).
+\]
+The $h$ parts raised at the creation of $x$ are unlabeled nonmultiples, and they remain above $x$ until $x$ is deleted.  Any later inserted multiple above $x$ is deleted earlier in the largest-to-smallest Stage S3 scan; any later inserted easy multiple has already been deleted in Stage S2.  Thus, when Stage S3 reaches $x$, the number of parts strictly larger than $x$ is exactly $h$.  The Stage S3 rule therefore records
+\[
+        \frac{x}{3}+h=(p-h)+h=p,
+\]
+deletes $x$, and subtracts $3$ from precisely the same $h$ nonmultiple parts that were raised when $x$ was inserted.  This is exactly the inverse of the hard insertion which created $x$.
+
+The unlabeled parts are the nonmultiples in the residue core, and neither Stage S2 nor Stage S3 deletes nonmultiples.  Therefore every inserted label is recorded exactly once, with the same value, and no extra values are recorded.  The forward record multiset is exactly the multiset of parts of $\nu$.
+\end{proof}
+The preceding lemmas now assemble into the promised self-contained modulus-three Stockhofe bijection.
+
+\begin{proposition}\label{prop:phi}
+The map $\Phi_3$ is a weight-preserving bijection from $3$-flat partitions of $N$ to $3$-regular partitions of $N$.  Its inverse is the insertion algorithm stated in the introduction.  Moreover, we have
+\[
+        \res(\Phi_3(\alpha))=\res(\alpha).
+\]
+\end{proposition}
+
+\begin{proof}
+Lemma~\ref{lem:phi-forward-well} proves that the forward algorithm lands in the correct
+set, preserves weight, and preserves the ordered nonzero residue sequence.  It
+remains to justify the inverse.
+
+Run the forward algorithm on a \(3\)-flat partition \(\alpha\).  At the end of
+the deletion stages, all multiples of \(3\) have been removed.  The remaining
+partition is \(3\)-flat, \(3\)-regular, and has residue sequence
+\(\res(\alpha)\); by Lemma~\ref{lem:core}, it is \(\Lambda(\res(\alpha))\).
+The deleted weight has been recorded in a list \(\nu_{\rm rec}\).  Let \(\nu\) be the partition obtained by sorting \(\nu_{\rm rec}\).  The final output is
+\[
+        \beta=\Lambda(\res(\alpha))+3\nu'.
+\]
+Lemma~\ref{lem:extract} shows that the inverse extraction recovers this same
+core and this same sorted record list \(\nu\).
+
+We now reverse the deletions, reading the sorted record list from largest to
+smallest.  A Stage S3 deletion of a part \(3a\) with exactly \(h\) larger parts
+records
+\[
+        p=a+h.
+\]
+It also subtracts \(3\) from exactly those \(h\) larger parts.  Its inverse is
+therefore forced: add \(3\) back to those \(h\) larger parts and insert
+\[
+        3a=3(p-h)
+\]
+immediately after them.  This is precisely a hard insertion of size \(p\).  The
+calculation in the proof of Lemma~\ref{lem:phi-forward-well} shows that this insertion
+is \(3\)-flat, and deleting the inserted part would recreate the gap enlarged
+by \(3\); hence the inserted multiple is not flat-removable.
+
+A Stage S2 deletion of a part \(3p\) records \(p\) and changes no other part.
+Its inverse is forced as well: reinsert \(3p\) in weakly decreasing order.  Since
+the original deletion was flat-removable, this is an admissible easy insertion.
+
+Lemma~\ref{lem:unique-insertion} shows that each such reverse step is unique:
+the hard position, if it exists, is forced; and an admissible hard insertion
+excludes an easy insertion.  If no hard insertion exists, the easy insertion is
+the only possible admissible move.  Thus reversing the recorded deletions
+reconstructs the original \(3\)-flat partition \(\alpha\).
+
+Conversely, begin with an arbitrary \(3\)-regular partition \(\beta\).  Extract
+\(A=\Lambda(\res(\beta))\), the quotient partition \(q=(\beta-A)/3\), and the record
+list \(\nu=q'\).  Lemma~\ref{lem:well-defined-inverse} proves, without any
+appeal to an external bijection, that the insertion algorithm is well-defined
+for this arbitrary input and that exactly one admissible move is available at
+each step.  Let \(\alpha\) be the resulting \(3\)-flat partition.
+
+Each insertion adds one recorded part \(p\) and changes the weight by exactly
+\(3p\): this is immediate for an easy insertion, and for a hard insertion after
+\(h\) parts the weight gain is
+\[
+        3h+3(p-h)=3p.
+\]
+The ordered nonzero residue sequence is unchanged throughout the insertion
+process, because only multiples of \(3\) are inserted and all other changes are
+by multiples of \(3\).  Therefore, when the forward \(\Phi_3\)-algorithm is
+run on \(\alpha\), Lemma~\ref{lem:phi-forward-well} gives a \(3\)-regular partition
+with residue sequence \(\res(\beta)\) and total weight
+\[
+        \wt(A)+3|\nu|
+        =\wt(A)+3|q|
+        =\wt(\beta).
+\]
+By Lemma~\ref{lem:compatibility}, the forward records are exactly the inserted
+record multiset \(\nu\).  Hence the forward output is
+\[
+        A+3\nu'=A+3q=\beta.
+\]
+Therefore, the forward and reverse algorithms are inverse bijections, and the
+residue-preservation statement follows from Lemma~\ref{lem:phi-forward-well}.
+\end{proof}
+
+
+\end{document}

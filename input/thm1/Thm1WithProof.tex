@@ -1,0 +1,225 @@
+\documentclass[11pt]{amsart}
+
+\usepackage{amsmath,amssymb,amsthm,enumitem,hyperref}
+\usepackage[margin=1.05in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+\hypersetup{colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem*{definition}{Definition}
+\newtheorem*{question}{Question}
+\newtheorem*{example}{Example}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}[section]
+
+\newcommand{\C}{\mathcal C}
+\newcommand{\D}{\mathcal D}
+\newcommand{\B}{\mathcal B}
+\newcommand{\R}{\mathcal R}
+\newcommand{\F}{\mathcal F}
+\newcommand{\res}{\operatorname{res}}
+\newcommand{\wt}{\operatorname{wt}}
+\newcommand{\mult}{\operatorname{mult}}
+\newcommand{\len}{\ell}
+
+
+\begin{document}
+
+
+A partition is a weakly decreasing finite list of nonnegative integers.  The \emph{weight} of a partition is the sum of its parts. Given a partition
+\[
+\lambda=(\lambda_1,\lambda_2,\ldots,\lambda_r),
+\qquad
+\lambda_1\geq \lambda_2\geq \cdots \geq \lambda_r,
+\]
+its \emph{Ferrers diagram} is the left-justified array of boxes with \(\lambda_i\)
+boxes in the \(i\)-th row.  For example, the partition \(\lambda=(5,3,3,1)\)
+has Ferrers diagram
+\[
+\begin{array}{ccccc}
+\Box&\Box&\Box&\Box&\Box\\
+\Box&\Box&\Box\\
+\Box&\Box&\Box\\
+\Box
+\end{array}.
+\]
+The \emph{conjugate partition} \(\lambda'\) is obtained by interchanging rows and
+columns in this diagram, or equivalently by reflecting the diagram across its
+main diagonal.  Therefore, the \(i\)-th part of \(\lambda'\) is the number of rows of
+the Ferrers diagram of \(\lambda\) that contain at least \(i\) boxes:
+\[
+\lambda'_i=\#\{j:\lambda_j\ge i\}.
+\]
+For instance, for \(\lambda=(5,3,3,1)\), we have
+\[
+\lambda'=(4,3,3,1,1),
+\]
+because the original diagram has four rows of length at least \(1\), three rows
+of length at least \(2\), three rows of length at least \(3\), one row of length
+at least \(4\), and one row of length at least \(5\).  Parts of size \(0\) do
+not contribute boxes to the Ferrers diagram, so they do not affect the conjugate
+partition.
+
+We now turn to the explicit partition functions considered by Andrews and Dhar.
+
+\begin{definition}[The Andrews--Dhar partition families]\label{def:families}
+Suppose that $n$ is a positive integer.
+
+\smallskip
+\noindent
+(a) Let $\C_3(n)$ be the set of partitions $\lambda$ of $n$ such that
+\begin{enumerate}[label=(\roman*)]
+\item the largest part of $\lambda$ is divisible by $3$, say it is $3J$;
+\item every part of $\lambda$ which is at most $J$ occurs at most twice.
+\end{enumerate}
+Let $C_3(n):=|\C_3(n)|$.
+
+\smallskip
+\noindent
+(b) Let $\D_3(n)$ be the set of partitions $\mu$ of $n$ into nonnegative parts such that
+\begin{enumerate}[label=(\roman*)]
+\item the smallest part of $\mu$ occurs exactly three times;
+\item every part strictly larger than the smallest part occurs at most twice.
+\end{enumerate}
+Let $D_3(n):=|\D_3(n)|$.
+For later use in generating functions, we also set
+\[
+        \D_3(0):=\{(0,0,0)\},\qquad D_3(0):=1.
+\]
+\end{definition}
+
+Parts of size $0$ are allowed only in the $D_3$ case.  They are never allowed in $\C_3(n)$.  Except when $\D_3(0)$ is explicitly used, all partitions outside the $D_3$ case have positive parts.  In $\D_3(n)$ the condition ``the smallest part occurs exactly three times'' determines exactly how zeros may occur: a $D_3$-partition either has no zero parts at all, or has exactly three zero parts.  In the latter case those three zeros are the three smallest parts, and every positive part is strictly larger than the smallest part and therefore occurs at most twice.  No partition counted by $D_3(n)$ has one zero, two zeros, or more than three zeros.
+
+\begin{example}
+For example, $(9,4)\in\C_3(13)$: its largest part is $9=3\cdot3$, and the parts at most $3$ occur at most twice.  Also, we have
+\[
+       (4,3,3,1,1,1)\in\D_3(13),
+\]
+because the smallest part $1$ occurs exactly three times and the larger parts $4,3,3$ have multiplicity at most two.
+\end{example}
+
+
+For $\mu\in\D_3(n)$, we define
+\[
+   \tau(\mu):=\#\{\text{parts of }\mu\text{ strictly larger than its smallest part}\}.
+\]
+For $i\in\{0,1,2\}$, set
+\[
+   \D_3^{(i)}(n):=\{\mu\in\D_3(n):\tau(\mu)\equiv i\pmod3\},
+   \qquad
+   D_3^{(i)}(n):=|\D_3^{(i)}(n)|.
+\]
+
+Our first result shows that $\tau(\mu)\pmod 3$ divides the $\D_3$ partitions into three disjoint sets of equal size when $n$ is not one more than a triangular number.
+
+\begin{theorem}[Residue-class equidistribution]\label{thm:thm1}
+Let $T_r:=r(r+1)/2$ be the $r$th triangular number.  If $n\ge1$ and $n\ne T_r+1$ for every $r\ge0$, then
+\[
+        D_3^{(0)}(n)=D_3^{(1)}(n)=D_3^{(2)}(n)=\frac{D_3(n)}3.
+\]
+\end{theorem}
+
+
+
+\section{Proof of Theorem~\ref{thm:thm1}}\label{sec:proof}
+Here we prove Theorem~\ref{thm:thm1} using standard generating function calculations.
+We require  the standard \(q\)-Pochhammer notation
+\[
+(a;q)_0:=1,\qquad
+(a;q)_N:=\prod_{j=0}^{N-1}(1-aq^j)\quad (N\geq 1),
+\]
+and
+\[
+(a;q)_\infty:=\prod_{j=0}^{\infty}(1-aq^j).
+\]
+Thus, for example, we have
+\[
+(q;q)_s=(1-q)(1-q^2)\cdots(1-q^s).
+\]
+All generating-function identities below are interpreted as identities of
+formal power series.
+
+\begin{proof}[Proof of Theorem~\ref{thm:thm1}]
+
+Let $\omega:=e^{2\pi i/3}$, and introduce the bivariate generating function
+\[
+        F(z;q):=\sum_{n\ge0}\sum_{\mu\in\D_3(n)}z^{\tau(\mu)}q^n.
+\]
+If the smallest part is $s\ge0$, then the three smallest parts contribute $q^{3s}$, and every larger part $r>s$ may occur zero, one, or two times, contributing $1+zq^r+z^2q^{2r}$.  Hence
+\[
+        F(z;q)=\sum_{s\ge0}q^{3s}\prod_{r\ge s+1}(1+zq^r+z^2q^{2r}).
+\]
+At $z=\omega$, the elementary factorization
+\[
+        1+\omega x+\omega^2x^2=(1-x)(1-\omega^2x)
+\]
+gives
+\[
+        F(\omega;q)=\sum_{s\ge0}q^{3s}(q^{s+1};q)_\infty(\omega^2q^{s+1};q)_\infty
+        =(q;q)_\infty\sum_{s\ge0}\frac{q^{3s}}{(q;q)_s}(\omega^2q^{s+1};q)_\infty.
+\]
+Using Euler's expansion
+\[
+        (t;q)_\infty=\sum_{k\ge0}\frac{(-1)^kq^{k(k-1)/2}t^k}{(q;q)_k}
+\]
+and then summing the resulting geometric $q$-series by
+\[
+        \sum_{s\ge0}\frac{q^{(k+3)s}}{(q;q)_s}=\frac1{(q^{k+3};q)_\infty},
+\]
+we obtain
+\[
+\begin{aligned}
+        F(\omega;q)
+        &= (q;q)_\infty\sum_{k\ge0}
+        \frac{(-1)^k\omega^{2k}q^{k(k+1)/2}}{(q;q)_k(q^{k+3};q)_\infty} \\
+        &= \sum_{k\ge0}(-1)^k\omega^{2k}q^{k(k+1)/2}(1-q^{k+1})(1-q^{k+2}).
+\end{aligned}
+\]
+Expanding the last two factors and shifting indices yields
+\[
+\begin{aligned}
+F(\omega;q)
+&=\sum_{k\ge0}(-1)^k\omega^{2k}q^{k(k+1)/2}
+ +(1+q)\sum_{k\ge1}(-1)^k\omega^{2k-2}q^{k(k+1)/2}  \\
+&\hspace{3.5em}+\sum_{k\ge2}(-1)^k\omega^{2k-4}q^{k(k+1)/2}.
+\end{aligned}
+\]
+For every $k\ge2$, the coefficient of $q^{k(k+1)/2}$ in the three displayed sums is
+\[
+        (-1)^k\omega^{2k-4}(\omega^4+\omega^2+1)=0.
+\]
+The triangular exponents $T_k$ with $k\ge2$ have therefore cancelled.  The only terms that survive, besides the constant term, are the $q\cdot q^{T_r}$ terms coming from the middle shifted sum.  Thus the remaining contribution from the factor $(1+q)$ is supported precisely at exponents one more than triangular numbers.  More explicitly,
+\[
+        F(\omega;q)=1+\sum_{r\ge0}(-1)^r\omega^{2r-2}q^{T_r+1}.
+\]
+The same calculation with $\omega$ replaced by $\omega^2$ gives
+\[
+        F(\omega^2;q)=1+\sum_{r\ge0}(-1)^r\omega^{r-1}q^{T_r+1},
+\]
+so both nontrivial cubic-root filters have zero coefficient in every positive degree that is not of the form $T_r+1$.
+
+Now write $a_i(n):=D_3^{(i)}(n)$.  The coefficient of $q^n$ in $F(\omega;q)$ is
+\[
+        a_0(n)+\omega a_1(n)+\omega^2a_2(n),
+\]
+and the coefficient of $q^n$ in $F(\omega^2;q)$ is
+\[
+        a_0(n)+\omega^2 a_1(n)+\omega a_2(n).
+\]
+For nonexceptional $n$, both quantities vanish.  Fourier inversion therefore gives
+\[
+        a_i(n)=\frac13\left(D_3(n)+\omega^{-i}\cdot0+\omega^{-2i}\cdot0\right)=\frac{D_3(n)}3
+\]
+for $i=0,1,2$.  This proves the theorem.  
+\end{proof}
+
+
+
+\end{document}
