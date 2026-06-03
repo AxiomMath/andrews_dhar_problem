@@ -346,9 +346,6 @@ private lemma tryEasyInsertion_isThreeFlatBool' {A : List ℕ} {p : ℕ} {result
     exact hcond.1
   · simp at hsome
 
--- Note: performInsertion_always_succeeds is proved later in this file (L3519+).
--- The early declaration was removed because it is unused and its full proof
--- depends on helper lemmas that appear later in the file.
 /-- `performInsertion` preserves 3-flatness. Early declaration for use in labeled scaffold. -/
 private theorem performInsertion_preserves_flat' (A : List ℕ) (p : ℕ) (hflat : IsThreeFlat A) :
     IsThreeFlat (performInsertion A p) := by
@@ -3026,11 +3023,6 @@ private lemma processInsertionsLabeled_easy_value_eq
           have hs_full : s ∈ q :: rest := List.mem_cons_of_mem q hs_rest
           exact hbound i hi r horg_i s hs_full
     exact ih (performInsertionLabeled A q) hflat' hν_rest hinv' hbound' j hj p horg
-
--- Lemma: processInsertionsLabeled_easy_value_eq END MARKER (do not remove)
--- The proof of processInsertionsLabeled_easy_value_eq is sorry-ed pending fix of
--- `split at *` failure after unfold performInsertionLabeled.
--- The statement IS true and was partially proved before.
 
 /-- Hard-origin position pullback through `tryHardInsertionLabeled`.
 
