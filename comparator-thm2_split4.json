@@ -1,0 +1,13 @@
+{
+  "challenge_module": "Bijection.thm2_split4.problem",
+  "solution_module": "Bijection.thm2_split4.solution",
+  "theorem_names": [
+    "phi3_bijOn"
+  ],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ],
+  "enable_nanoda": false
+}

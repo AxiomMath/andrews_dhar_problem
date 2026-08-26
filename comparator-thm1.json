@@ -1,0 +1,13 @@
+{
+  "challenge_module": "Bijection.thm1.problem",
+  "solution_module": "Bijection.thm1.solution",
+  "theorem_names": [
+    "AndrewsDharD3.D3_equidistribution"
+  ],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ],
+  "enable_nanoda": false
+}

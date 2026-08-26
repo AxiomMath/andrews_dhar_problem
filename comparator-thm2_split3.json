@@ -1,0 +1,14 @@
+{
+  "challenge_module": "Bijection.thm2_split3.problem",
+  "solution_module": "Bijection.thm2_split3.solution",
+  "theorem_names": [
+    "AndrewsDhar.intermediate_lemma",
+    "AndrewsDhar.lem_conj"
+  ],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ],
+  "enable_nanoda": false
+}
